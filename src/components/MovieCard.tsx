@@ -1,5 +1,6 @@
 import type { Movie } from "../types/movie";
 
+
 interface MovieCardProps {
   movie: Movie;
 }

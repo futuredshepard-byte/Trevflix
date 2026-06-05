@@ -10,11 +10,11 @@ export default function HeroBanner() {
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />
 
       <div className="absolute bottom-20 left-10">
-        <h1 className="mb-4 text-6xl font-bold">
+        <h1 className="mb-4 text-6xl font-bold text-[#FFD700]">
           Featured Movie
         </h1>
 
-        <button className="rounded bg-white px-8 py-3 font-semibold text-black">
+        <button className="rounded bg-white px-8 py-3 font-semibold text-gold">
           ▶ Play
         </button>
       </div>
