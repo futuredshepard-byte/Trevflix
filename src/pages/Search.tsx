@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
+
 
 interface Movie {
   id: number;
@@ -10,57 +12,48 @@ interface Movie {
 }
 
 export default function Search() {
-  const [query, setQuery] = useState("");
+  const [searchParams] = useSearchParams();
   const [results, setResults] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searched, setSearched] = useState(false);
-
+  const query = searchParams.get("q") || "";
   const API_KEY = "af05814db5a570bc3e45213b38632189";
 
-  const handleSearch = async () => {
-    if (!query.trim()) return;
+  useEffect(() => {
+    if (!query) return;
     setLoading(true);
-    setSearched(true);
-    const res = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`
-    );
-    const data = await res.json();
-    setResults(data.results || []);
-    setLoading(false);
-  };
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setResults(data.results || []);
+        setLoading(false);
+      });
+  }, [query]);
 
   return (
     <Layout>
-      <div className="px-10 py-8">
-       
-        <div className="flex gap-3 mb-8">
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            placeholder="Search movies..."
-            className="flex-1 bg-zinc-800 text-white px-5 py-3 rounded outline-none border border-zinc-700 focus:border-[#FFD700] text-base"
-          />
-          <button
-            onClick={handleSearch}
-            className="bg-[#FFD700] text-black font-bold px-7 py-3 rounded"
-          >
-            Search
-          </button>
+        <div>
+            
         </div>
-
-      p
-        {loading && (
-          <p className="text-gray-400 text-center">Searching...</p>
+      <div className="px-10 py-8">
+         <Link
+          to="/home"
+          className="inline-block mb-6 text-yellow-500 hover:underline"
+        >
+          ← Back to Home
+        </Link>
+        {query ? (
+          <>
+            <h1 className="text-[#FFD700] text-3xl font-bold mb-6 justify-center flex">
+              Results for "{query}"
+            </h1>
+            {loading && <p className="text-gray-400 text-center">Searching...</p>}
+            {!loading && results.length === 0 && (
+              <p className="text-gray-400 text-center">No results found for "{query}"</p>
+            )}
+          </>
+        ) : (
+          <p className="text-gray-400 text-center">Type something in the search bar to find movies.</p>
         )}
-
-        
-        {searched && !loading && results.length === 0 && (
-          <p className="text-gray-400 text-center">No results found for "{query}"</p>
-        )}
-
-       
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {results.map((movie) => (
             <div key={movie.id} className="cursor-pointer group">
