@@ -22,3 +22,15 @@ export async function getTrendingMovies() {
 
   return data.results;
 }
+
+export async function getMovieDetails(movieId: string) {
+    const response = await fetch(
+        `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`
+    );
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch movie details");
+    }
+
+    return await response.json();
+}
