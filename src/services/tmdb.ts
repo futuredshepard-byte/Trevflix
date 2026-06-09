@@ -10,12 +10,12 @@ export async function getTrendingMovies() {
   );
 
   if (!response.ok) {
-    console.log("Status:", response.status);
+    // console.log("Status:", response.status);
 
-    const errorText = await response.text();
-    console.log(errorText);
+    // const errorText = await response.text();
+    // console.log(errorText);
 
-    throw new Error("Failed to fetch movies");
+    // throw new Error("Failed to fetch movies");
   }
 
   const data = await response.json();
